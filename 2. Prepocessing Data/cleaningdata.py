@@ -6,13 +6,13 @@ import pandas as pd
 
 factory = StopWordRemoverFactory()
 stopword = factory.create_stop_word_remover()
-path = "crawl1.xlsx"
+path = "crawling.xlsx"
 
 # membaca file hasil crawling
 df = pd.read_excel(path, sheet_name='before')
 df2 = pd.read_excel(path, sheet_name='after')
-datas = df['content'].tolist()
-datas.extend(df2['content'].tolist())
+datas = df['tweet'].tolist()
+datas.extend(df2['tweet'].tolist())
 
 def preprocess(text):
     # mengecilkan huruf
@@ -29,12 +29,14 @@ def preprocess(text):
 
 
 data = [preprocess(t) for t in datas]
+
+# menghilangkan data duplikat
 data = [*set(data)]
 
 excel_data = {
-    'content' : data, 'sentiment':''
+    'tweet' : data, 'sentimen':''
 }
 
 df = pd.DataFrame(excel_data)
 
-df.to_excel('prepocessing.xlsx', index=False)
+df.to_excel('cleaned.xlsx', index=False)
